@@ -69,6 +69,7 @@ internal fun HomeEntries(
                 DraggableVerticalList(
                     modifier = Modifier.fillMaxSize(),
                     draggableItems = items,
+                    isDragEnabled = canSortItems,
                     listState = listState,
                     verticalArrangement = Arrangement.spacedBy(space = ThemeSpacing.Small),
                     onSorted = { sortingMap -> onEntriesSorted(sortingMap, entryModels) },

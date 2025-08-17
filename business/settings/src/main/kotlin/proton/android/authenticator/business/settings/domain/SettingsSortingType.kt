@@ -16,16 +16,12 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.entries.domain
+package proton.android.authenticator.business.settings.domain
 
-import me.proton.core.crypto.common.keystore.EncryptedByteArray
-
-data class Entry(
-    val id: String,
-    val content: EncryptedByteArray,
-    val createdAt: Long,
-    val modifiedAt: Long,
-    val isDeleted: Boolean,
-    val isSynced: Boolean,
-    val position: Int
-)
+enum class SettingsSortingType {
+    CreatedAsc,
+    CreatedDesc,
+    IssuerAsc,
+    IssuerDesc,
+    Manual
+}

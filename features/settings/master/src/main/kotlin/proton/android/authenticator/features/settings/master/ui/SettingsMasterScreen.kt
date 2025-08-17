@@ -114,6 +114,7 @@ fun SettingsMasterScreen(
                     onThemeTypeChange = ::onUpdateThemeType,
                     onSearchBarTypeChange = ::onUpdateSearchBarType,
                     onDigitTypeChange = ::onUpdateDigitType,
+                    onSortingTypeChange = ::onUpdateSortingType,
                     onCodeChangeAnimationChange = ::onUpdateIsCodeChangeAnimationEnabled,
                     onImportClick = onImportClick,
                     onExportClick = onExportClick,

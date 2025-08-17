@@ -37,6 +37,7 @@ import proton.android.authenticator.business.biometrics.application.authenticati
 import proton.android.authenticator.business.settings.domain.SettingsAppLockType
 import proton.android.authenticator.business.settings.domain.SettingsDigitType
 import proton.android.authenticator.business.settings.domain.SettingsSearchBarType
+import proton.android.authenticator.business.settings.domain.SettingsSortingType
 import proton.android.authenticator.business.settings.domain.SettingsThemeType
 import proton.android.authenticator.features.settings.master.R
 import proton.android.authenticator.features.settings.master.usecases.ObserveUninstalledProtonApps
@@ -224,6 +225,13 @@ internal class SettingsMasterViewModel @Inject constructor(
         if (settingsModel.digitType == newDigitType) return
 
         settingsModel.copy(digitType = newDigitType)
+            .also(::updateSettings)
+    }
+
+    internal fun onUpdateSortingType(settingsModel: SettingsMasterSettingsModel, newSortingType: SettingsSortingType) {
+        if (settingsModel.sortingType == newSortingType) return
+
+        settingsModel.copy(sortingType = newSortingType)
             .also(::updateSettings)
     }
 

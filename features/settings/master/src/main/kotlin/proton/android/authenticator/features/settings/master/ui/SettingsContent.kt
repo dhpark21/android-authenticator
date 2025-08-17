@@ -34,6 +34,7 @@ import androidx.compose.ui.res.stringResource
 import proton.android.authenticator.business.settings.domain.SettingsAppLockType
 import proton.android.authenticator.business.settings.domain.SettingsDigitType
 import proton.android.authenticator.business.settings.domain.SettingsSearchBarType
+import proton.android.authenticator.business.settings.domain.SettingsSortingType
 import proton.android.authenticator.business.settings.domain.SettingsThemeType
 import proton.android.authenticator.features.settings.master.R
 import proton.android.authenticator.features.settings.master.presentation.SettingsMasterSettingsModel
@@ -46,7 +47,6 @@ import proton.android.authenticator.shared.ui.domain.modifiers.applyIf
 import proton.android.authenticator.shared.ui.domain.theme.ThemePadding
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 
-
 @[Composable OptIn(ExperimentalFoundationApi::class)]
 internal fun SettingsContent(
     state: SettingsMasterState.Ready,
@@ -58,6 +58,7 @@ internal fun SettingsContent(
     onThemeTypeChange: (SettingsMasterSettingsModel, SettingsThemeType) -> Unit,
     onSearchBarTypeChange: (SettingsMasterSettingsModel, SettingsSearchBarType) -> Unit,
     onDigitTypeChange: (SettingsMasterSettingsModel, SettingsDigitType) -> Unit,
+    onSortingTypeChange: (SettingsMasterSettingsModel, SettingsSortingType) -> Unit,
     onCodeChangeAnimationChange: (SettingsMasterSettingsModel, Boolean) -> Unit,
     onImportClick: () -> Unit,
     onExportClick: () -> Unit,
@@ -158,6 +159,15 @@ internal fun SettingsContent(
                         options = settingsModel.digitOptions,
                         onSelectedOptionChange = { digitType ->
                             onDigitTypeChange(settingsModel, digitType)
+                        }
+                    )
+                },
+                {
+                    SelectorRow(
+                        titleText = UiText.Resource(id = R.string.settings_appearance_title_sorting),
+                        options = settingsModel.sortingOptions,
+                        onSelectedOptionChange = { sortingType ->
+                            onSortingTypeChange(settingsModel, sortingType)
                         }
                     )
                 },

@@ -45,6 +45,12 @@
     <string name="settings_appearance_title_digit_style">Digit style</string>
     <string name="settings_appearance_title_digit_style_option_plain">Plain</string>
     <string name="settings_appearance_title_digit_style_option_boxes">Boxes</string>
+    <string name="settings_appearance_title_sorting">Sorting</string>
+    <string name="settings_appearance_title_sorting_option_created_asc">Oldest</string>
+    <string name="settings_appearance_title_sorting_option_created_desc">Newest</string>
+    <string name="settings_appearance_title_sorting_option_issuer_asc">Issuer (A - Z)</string>
+    <string name="settings_appearance_title_sorting_option_issuer_desc">Issuer (Z - A)</string>
+    <string name="settings_appearance_title_sorting_option_manual">Manual</string>
     <string name="settings_appearance_title_animate_code_change">Animate code change</string>
 
     <string name="settings_data_management_section">Manage your data</string>

@@ -91,7 +91,8 @@ import proton.android.authenticator.business.shared.infrastructure.persistence.r
 
 @Database(
     autoMigrations = [
-        AutoMigration(from = 1, to = 2)
+        AutoMigration(from = 1, to = 2),
+        AutoMigration(from = 2, to = 3)
     ],
     entities = [
         AccountEntity::class,
@@ -177,7 +178,7 @@ internal abstract class AuthenticatorDatabase :
 
         internal const val NAME = "authenticator.db"
 
-        internal const val VERSION = 2
+        internal const val VERSION = 3
 
     }
 

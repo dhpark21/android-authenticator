@@ -68,6 +68,7 @@ internal sealed interface SettingsMasterState {
             themeType = settings.themeType,
             searchBarType = settings.searchBarType,
             digitType = settings.digitType,
+            sortingType = settings.sortingType,
             isPassBannerDismissed = settings.isPassBannerDismissed,
             isFirstRun = settings.isFirstRun,
             installationTime = settings.installationTime
