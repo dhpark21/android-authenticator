@@ -32,6 +32,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import proton.android.authenticator.business.anonymous.data.domain.AnonymousData
 import proton.android.authenticator.business.applock.domain.AppLockState
 import proton.android.authenticator.business.biometrics.application.authentication.AuthenticateBiometricReason
 import proton.android.authenticator.business.settings.domain.SettingsAppLockType
@@ -40,7 +41,9 @@ import proton.android.authenticator.business.settings.domain.SettingsSearchBarTy
 import proton.android.authenticator.business.settings.domain.SettingsSortingType
 import proton.android.authenticator.business.settings.domain.SettingsThemeType
 import proton.android.authenticator.features.settings.master.R
+import proton.android.authenticator.features.settings.master.usecases.ObserveAnonymousDataUseCase
 import proton.android.authenticator.features.settings.master.usecases.ObserveUninstalledProtonApps
+import proton.android.authenticator.features.settings.master.usecases.UpdateAnonymousDataUseCase
 import proton.android.authenticator.features.shared.app.usecases.GetAppVersionNameUseCase
 import proton.android.authenticator.features.shared.app.usecases.GetBuildFlavorUseCase
 import proton.android.authenticator.features.shared.entries.usecases.ObserveHasEntryModelsUseCase
@@ -53,6 +56,7 @@ import proton.android.authenticator.features.shared.users.usecases.ObserveIsUser
 import proton.android.authenticator.features.shared.users.usecases.ObserveUserUseCase
 import proton.android.authenticator.shared.common.domain.answers.Answer
 import proton.android.authenticator.shared.common.domain.models.SnackbarEvent
+import proton.android.authenticator.shared.common.logs.AuthenticatorLogger
 import javax.inject.Inject
 
 @HiltViewModel
@@ -63,11 +67,13 @@ internal class SettingsMasterViewModel @Inject constructor(
     observeSettingsUseCase: ObserveSettingsUseCase,
     observeUninstalledProtonApps: ObserveUninstalledProtonApps,
     observeUserUseCase: ObserveUserUseCase,
+    observeAnonymousDataUseCase: ObserveAnonymousDataUseCase,
     private val authenticateBiometricUseCase: AuthenticateBiometricUseCase,
     private val updateSettingsUseCase: UpdateSettingsUseCase,
     private val updateAppLockStateUseCase: UpdateAppLockStateUseCase,
     private val dispatchSnackbarEventUseCase: DispatchSnackbarEventUseCase,
-    private val observeIsUserAuthenticatedUseCase: ObserveIsUserAuthenticatedUseCase
+    private val observeIsUserAuthenticatedUseCase: ObserveIsUserAuthenticatedUseCase,
+    private val updateAnonymousDataUseCase: UpdateAnonymousDataUseCase
 ) : ViewModel() {
 
     private val eventFlow = MutableStateFlow<SettingsMasterEvent>(value = SettingsMasterEvent.Idle)
@@ -76,6 +82,7 @@ internal class SettingsMasterViewModel @Inject constructor(
         getAppVersionNameUseCase().let(::flowOf),
         getBuildFlavorUseCase().let(::flowOf),
         observeHasEntryModelsUseCase(),
+        observeAnonymousDataUseCase(),
         ::SettingsMasterConfigModel
     )
 
@@ -94,6 +101,35 @@ internal class SettingsMasterViewModel @Inject constructor(
 
     internal fun onConsumeEvent(event: SettingsMasterEvent) {
         eventFlow.compareAndSet(expect = event, update = SettingsMasterEvent.Idle)
+    }
+
+    internal fun onToggleShareCrashReport(anonymousData: AnonymousData, newIsCrashReportEnabled: Boolean) {
+        anonymousData
+            .copy(isCrashReportEnabled = newIsCrashReportEnabled)
+            .also(::updateAnonymousData)
+    }
+
+    internal fun onToggleShareTelemetry(anonymousData: AnonymousData, newIsTelemetryEnabled: Boolean) {
+        anonymousData
+            .copy(isTelemetryEnabled = newIsTelemetryEnabled)
+            .also(::updateAnonymousData)
+    }
+
+    private fun updateAnonymousData(anonymousData: AnonymousData) {
+        viewModelScope.launch {
+            updateAnonymousDataUseCase(anonymousData = anonymousData).fold(
+                onFailure = { reason ->
+                    AuthenticatorLogger.w(TAG, "Failed to update anonymous data sharing: $reason")
+
+                    dispatchSnackbarMessage(
+                        messageResId = R.string.settings_snackbar_message_anonymous_data_sharing_error
+                    )
+                },
+                onSuccess = {
+                    AuthenticatorLogger.i(TAG, "Successfully updated anonymous data sharing")
+                }
+            )
+        }
     }
 
     internal fun onUpdateIsPassBannerDismissed(settingsModel: SettingsMasterSettingsModel) {
@@ -261,6 +297,12 @@ internal class SettingsMasterViewModel @Inject constructor(
         SnackbarEvent(messageResId = messageResId).also { snackbarEvent ->
             dispatchSnackbarEventUseCase(snackbarEvent)
         }
+    }
+
+    private companion object {
+
+        private const val TAG = "SettingsMasterViewModel"
+
     }
 
 }

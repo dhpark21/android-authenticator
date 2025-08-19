@@ -16,14 +16,18 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.settings.master.presentation
+package proton.android.authenticator.business.anonymous.data.application.find
 
+import kotlinx.coroutines.flow.Flow
 import proton.android.authenticator.business.anonymous.data.domain.AnonymousData
-import proton.android.authenticator.shared.common.domain.builds.BuildFlavor
+import proton.android.authenticator.shared.common.domain.infrastructure.queries.QueryHandler
+import javax.inject.Inject
 
-internal data class SettingsMasterConfigModel(
-    internal val appVersionName: String,
-    internal val buildFlavor: BuildFlavor,
-    internal val canExportEntries: Boolean,
-    internal val anonymousData: AnonymousData?
-)
+internal class FindAnonymousDataQueryHandler @Inject constructor(
+    private val finder: AnonymousDataFinder
+) : QueryHandler<FindAnonymousDataQuery, AnonymousData> {
+
+    override fun handle(query: FindAnonymousDataQuery): Flow<AnonymousData> = finder
+        .find(userId = query.userId)
+
+}

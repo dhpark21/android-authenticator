@@ -16,19 +16,19 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.business.applock.di
+package proton.android.authenticator.business.anonymous.data.di
 
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoMap
-import proton.android.authenticator.business.applock.application.find.FindAppLockStateQuery
-import proton.android.authenticator.business.applock.application.find.FindAppLockStateQueryHandler
-import proton.android.authenticator.business.applock.application.update.UpdateAppLockStateCommand
-import proton.android.authenticator.business.applock.application.update.UpdateAppLockStateCommandHandler
-import proton.android.authenticator.business.applock.domain.AppLockRepository
-import proton.android.authenticator.business.applock.infrastructure.AppLockRepositoryImpl
+import proton.android.authenticator.business.anonymous.data.application.find.FindAnonymousDataQuery
+import proton.android.authenticator.business.anonymous.data.application.find.FindAnonymousDataQueryHandler
+import proton.android.authenticator.business.anonymous.data.application.update.UpdateAnonymousDataCommand
+import proton.android.authenticator.business.anonymous.data.application.update.UpdateAnonymousDataCommandHandler
+import proton.android.authenticator.business.anonymous.data.domain.AnonymousDataRepository
+import proton.android.authenticator.business.anonymous.data.infrastructure.CoreAnonymousDataRepository
 import proton.android.authenticator.shared.common.di.CommandHandlerKey
 import proton.android.authenticator.shared.common.di.QueryHandlerKey
 import proton.android.authenticator.shared.common.domain.infrastructure.commands.CommandHandler
@@ -36,16 +36,17 @@ import proton.android.authenticator.shared.common.domain.infrastructure.queries.
 import javax.inject.Singleton
 
 @[Module InstallIn(SingletonComponent::class)]
-internal abstract class AppLockModule {
+internal abstract class BusinessAnonymousDataModule {
 
-    @[Binds Singleton IntoMap QueryHandlerKey(FindAppLockStateQuery::class)]
-    internal abstract fun bindFindAppLockStateQueryHandler(impl: FindAppLockStateQueryHandler): QueryHandler<*, *>
+    @[Binds Singleton IntoMap QueryHandlerKey(FindAnonymousDataQuery::class)]
+    internal abstract fun bindFindAnonymousDataQueryHandler(impl: FindAnonymousDataQueryHandler): QueryHandler<*, *>
 
-    @[Binds Singleton IntoMap CommandHandlerKey(UpdateAppLockStateCommand::class)]
-    internal abstract fun bindUpdateAppLockStateCommandHandler(
-        impl: UpdateAppLockStateCommandHandler
+    @[Binds Singleton IntoMap CommandHandlerKey(UpdateAnonymousDataCommand::class)]
+    internal abstract fun bindUpdateAnonymousDataCommandHandler(
+        impl: UpdateAnonymousDataCommandHandler
     ): CommandHandler<*, *, *>
 
     @[Binds Singleton]
-    internal abstract fun bindAppLockRepository(impl: AppLockRepositoryImpl): AppLockRepository
+    internal abstract fun bindAnonymousDataRepository(impl: CoreAnonymousDataRepository): AnonymousDataRepository
+
 }

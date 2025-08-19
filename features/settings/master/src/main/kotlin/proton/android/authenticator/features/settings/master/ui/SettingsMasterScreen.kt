@@ -122,6 +122,8 @@ fun SettingsMasterScreen(
                     onFeedbackClick = onFeedbackClick,
                     onDiscoverAppClick = onDiscoverAppClick,
                     onViewLogsClick = onViewLogsClick,
+                    onShareTelemetryChange = ::onToggleShareTelemetry,
+                    onShareCrashReportChange = ::onToggleShareCrashReport,
                     onVersionNameClick = onVersionNameClick
                 )
             }

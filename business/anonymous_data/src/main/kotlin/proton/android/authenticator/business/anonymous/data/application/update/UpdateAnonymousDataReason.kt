@@ -16,14 +16,11 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.settings.master.presentation
+package proton.android.authenticator.business.anonymous.data.application.update
 
-import proton.android.authenticator.business.anonymous.data.domain.AnonymousData
-import proton.android.authenticator.shared.common.domain.builds.BuildFlavor
+import proton.android.authenticator.shared.common.domain.answers.AnswerReason
 
-internal data class SettingsMasterConfigModel(
-    internal val appVersionName: String,
-    internal val buildFlavor: BuildFlavor,
-    internal val canExportEntries: Boolean,
-    internal val anonymousData: AnonymousData?
-)
+enum class UpdateAnonymousDataReason : AnswerReason {
+    InvalidUser,
+    NetworkError
+}

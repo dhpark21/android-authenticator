@@ -16,14 +16,16 @@
  * along with Proton Authenticator.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package proton.android.authenticator.features.settings.master.presentation
+package proton.android.authenticator.business.anonymous.data.application.update
 
 import proton.android.authenticator.business.anonymous.data.domain.AnonymousData
-import proton.android.authenticator.shared.common.domain.builds.BuildFlavor
+import proton.android.authenticator.business.anonymous.data.domain.AnonymousDataRepository
+import javax.inject.Inject
 
-internal data class SettingsMasterConfigModel(
-    internal val appVersionName: String,
-    internal val buildFlavor: BuildFlavor,
-    internal val canExportEntries: Boolean,
-    internal val anonymousData: AnonymousData?
-)
+internal class AnonymousDataUpdater @Inject constructor(private val repository: AnonymousDataRepository) {
+
+    internal suspend fun update(anonymousData: AnonymousData) {
+        repository.updateAnonymousData(anonymousData = anonymousData)
+    }
+
+}
