@@ -42,6 +42,12 @@
   <string name="settings_appearance_title_digit_style">Stile delle cifre</string>
   <string name="settings_appearance_title_digit_style_option_plain">Tinta unita</string>
   <string name="settings_appearance_title_digit_style_option_boxes">Caselle</string>
+  <string name="settings_appearance_title_sorting">Classificazione</string>
+  <string name="settings_appearance_title_sorting_option_created_asc">Il più vecchio</string>
+  <string name="settings_appearance_title_sorting_option_created_desc">Il più recente</string>
+  <string name="settings_appearance_title_sorting_option_issuer_asc">Ordina per emittente (A-Z)</string>
+  <string name="settings_appearance_title_sorting_option_issuer_desc">Ordina per emittente (Z-A)</string>
+  <string name="settings_appearance_title_sorting_option_manual">Manuale</string>
   <string name="settings_appearance_title_animate_code_change">Anima il cambio del codice</string>
   <string name="settings_data_management_section">Gestisci i tuoi dati</string>
   <string name="settings_data_management_title_import">Importa</string>
@@ -51,6 +57,8 @@
   <string name="settings_support_title_feedback">Feedback</string>
   <string name="settings_application_section">Applicazione</string>
   <string name="settings_application_title_view_logs">Visualizza log</string>
+  <string name="settings_application_title_anonymous_telemetry">Condivisione utilizzo anonimo</string>
+  <string name="settings_application_title_anonymous_crashes">Invia segnalazioni di errore anonime</string>
   <string name="settings_discover_section">Scopri Proton</string>
   <string name="settings_discover_pass_description">Conserva password forti e uniche per evitare furti di identità e violazioni dei dati.</string>
   <string name="settings_discover_vpn_description">Naviga senza tracciamento e accedi a contenuti bloccati.</string>
@@ -58,6 +66,7 @@
   <string name="settings_discover_calendar_description">Organizza il tuo programma e tieni i tuoi piani per te.</string>
   <string name="settings_discover_drive_description">Dai alle tue preziose foto e file la casa sicura che meritano.</string>
   <string name="settings_app_version" comment="The placeholder will be replaced with the app version number. (e.g. Version 1.0.0)">Versione %1$s</string>
+  <string name="settings_snackbar_message_anonymous_data_sharing_error">Errore nell’aggiornamento della condivisione dati anonimi</string>
   <string name="settings_snackbar_message_biometric_error">Si è verificato un errore durante l\'autenticazione biometrica</string>
   <string name="settings_snackbar_message_update_error">Si è verificato un errore durante l\'aggiornamento delle impostazioni</string>
 </resources>
