@@ -19,7 +19,7 @@
 <resources>
   <string name="backups_screen_title">Sicherungen</string>
   <string name="backups_automatic_backups_title">Automatische Sicherungen</string>
-  <string name="backups_notifications_permission_dialog_title">Backup Benachrichtigungen</string>
+  <string name="backups_notifications_permission_dialog_title">Benachrichtigungen zu Sicherungen</string>
   <string name="backups_notifications_permission_dialog_explanation">Die App benötigt Erlaubnis für Benachrichtigungen, um dich zu informieren, wenn deine Daten gesichert werden.</string>
   <string name="backups_notifications_permission_dialog_allow">Erlauben</string>
   <string name="backups_notifications_permission_dialog_deny">Überspringen (nicht empfohlen)</string>

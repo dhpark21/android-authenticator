@@ -18,6 +18,6 @@
   -->
 <resources>
   <string name="backups_password_dialog_title">Mit Passwort schützen?</string>
-  <string name="backups_password_dialog_message">Setze ein Passwort, um deine Backupdateien zu schützen.</string>
+  <string name="backups_password_dialog_message">Setze ein Passwort, um deine Sicherungsdateien zu schützen.</string>
   <string name="backups_password_dialog_action_cancel">Nein (nicht empfohlen)</string>
 </resources>

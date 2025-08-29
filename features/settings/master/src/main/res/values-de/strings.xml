@@ -57,7 +57,7 @@
   <string name="settings_support_title_feedback">Feedback</string>
   <string name="settings_application_section">Anwendung</string>
   <string name="settings_application_title_view_logs">Protokolle anzeigen</string>
-  <string name="settings_application_title_anonymous_telemetry">Nutzerverhalten anonym teilen</string>
+  <string name="settings_application_title_anonymous_telemetry">Nutzungsverhalten anonym teilen</string>
   <string name="settings_application_title_anonymous_crashes">Absturzberichte anonym teilen</string>
   <string name="settings_discover_section">Proton entdecken</string>
   <string name="settings_discover_pass_description">Speichere sichere, eindeutige Passwörter, um Identitätsdiebstahl und Datenlecks zu vermeiden.</string>

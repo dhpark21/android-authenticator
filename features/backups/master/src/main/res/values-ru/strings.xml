@@ -19,8 +19,8 @@
 <resources>
   <string name="backups_screen_title">Резервные копии</string>
   <string name="backups_automatic_backups_title">Автоматическое резервное копирование</string>
-  <string name="backups_notifications_permission_dialog_title">Уведомления резервного копирования</string>
-  <string name="backups_notifications_permission_dialog_explanation">The app needs notification permission to let you know when your data is backed up.</string>
+  <string name="backups_notifications_permission_dialog_title">Уведомления о резервном копировании</string>
+  <string name="backups_notifications_permission_dialog_explanation">Приложению требуется разрешение для отправки уведомлений, чтобы дать вам знать, когда резервная копия будет создана.</string>
   <string name="backups_notifications_permission_dialog_allow">Разрешить</string>
   <string name="backups_notifications_permission_dialog_deny">Пропустить (не рекомендуется)</string>
   <string name="backups_automatic_backups_location_title">Расположение папки</string>
