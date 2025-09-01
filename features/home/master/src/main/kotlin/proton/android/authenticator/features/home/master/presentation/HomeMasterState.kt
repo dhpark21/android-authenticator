@@ -172,11 +172,11 @@ internal sealed interface HomeMasterState {
             }
 
             SettingsSortingType.IssuerAsc -> {
-                sortedBy(EntryModel::issuer)
+                sortedBy { entryModel -> entryModel.issuer.lowercase() }
             }
 
             SettingsSortingType.IssuerDesc -> {
-                sortedByDescending(EntryModel::issuer)
+                sortedByDescending { entryModel -> entryModel.issuer.lowercase() }
             }
         }
 
