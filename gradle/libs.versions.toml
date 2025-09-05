@@ -82,6 +82,7 @@ core-accountRecovery = { module = "me.proton.core:account-recovery", version.ref
 core-auth = { module = "me.proton.core:auth", version.ref = "coreVersion" }
 core-authFidoDagger = { module = "me.proton.core:auth-fido-dagger", version.ref = "coreVersion" }
 core-authFidoDomain = { module = "me.proton.core:auth-fido-domain", version.ref = "coreVersion" }
+core-authFidoPlay = { module = "me.proton.core:auth-fido-play", version.ref = "coreVersion" }
 core-biometric = { module = "me.proton.core:biometric", version.ref = "coreVersion" }
 core-challenge = { module = "me.proton.core:challenge", version.ref = "coreVersion" }
 core-country = { module = "me.proton.core:country", version.ref = "coreVersion" }
