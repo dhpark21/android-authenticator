@@ -231,6 +231,7 @@ me.proton.core:auth-data:34.3.0
 me.proton.core:auth-domain:34.3.0
 me.proton.core:auth-fido-dagger:34.3.0
 me.proton.core:auth-fido-domain:34.3.0
+me.proton.core:auth-fido-play:34.3.0
 me.proton.core:auth-presentation-compose:34.3.0
 me.proton.core:auth-presentation:34.3.0
 me.proton.core:auth:34.3.0
