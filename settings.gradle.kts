@@ -48,7 +48,11 @@ plugins {
     id("me.proton.core.gradle-plugins.include-core-build") version "1.3.1"
 }
 
-includeCoreBuild {}
+includeCoreBuild {
+    branch.set("main")
+
+    includeBuild("gopenpgp")
+}
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
