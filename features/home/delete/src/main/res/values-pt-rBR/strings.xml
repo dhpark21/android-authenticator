@@ -18,5 +18,5 @@
   -->
 <resources>
   <string name="home_delete_error_dialog_title">Excluir código?</string>
-  <string name="home_delete_error_dialog_message">O código será excluído permanentemente. Certifique-se de que seus dados estejam salvos em \"backup\" antes de continuar.</string>
+  <string name="home_delete_error_dialog_message">O código será excluído permanentemente. Certifique-se de que seus dados estejam salvos em backup antes de continuar.</string>
 </resources>

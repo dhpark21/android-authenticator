@@ -58,7 +58,7 @@
   <string name="settings_application_section">Aplicativo</string>
   <string name="settings_application_title_view_logs">Visualizar logs</string>
   <string name="settings_application_title_anonymous_telemetry">Compartilhar uso anônimo</string>
-  <string name="settings_application_title_anonymous_crashes">Compartilhar relatórios de falha anônimos</string>
+  <string name="settings_application_title_anonymous_crashes">Compartilhe relatórios de falhas anônimos</string>
   <string name="settings_discover_section">Descobrir o Proton</string>
   <string name="settings_discover_pass_description">Armazene senhas fortes e únicas para evitar roubo de identidade e violações.</string>
   <string name="settings_discover_vpn_description">Navegue livre de rastreamento e acesse conteúdo bloqueado.</string>

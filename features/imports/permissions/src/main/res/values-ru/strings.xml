@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="imports_permissions_title">Требуется разрешение</string>
-  <string name="imports_permissions_description">Включите разрешение на использование камеры, чтобы воспользоваться сканером QR-кодов. Это позволит приложению считывать QR-коды и генерировать ваш уникальный код.</string>
+  <string name="imports_permissions_description">Разрешите доступ к камере, чтобы использовать сканер QR-кодов. Это позволит приложению считывать QR-коды и генерировать ваш уникальный код.</string>
   <string name="imports_permissions_action_primary">Открыть настройки</string>
   <string name="imports_permissions_action_secondary">Импортировать из галереи</string>
 </resources>
