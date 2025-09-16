@@ -160,19 +160,22 @@ internal class SettingsMasterViewModel @Inject constructor(
         if (settingsModel.appLockType == newAppLockType) return
 
         when (newAppLockType) {
-            SettingsAppLockType.None -> Pair(
+            SettingsAppLockType.None -> Triple(
                 first = R.string.settings_security_lock_disable_title,
-                second = R.string.settings_security_lock_disable_subtitle
+                second = R.string.settings_security_lock_disable_subtitle,
+                third = proton.android.authenticator.shared.ui.R.string.action_cancel
             )
 
-            SettingsAppLockType.Biometric -> Pair(
+            SettingsAppLockType.Biometric -> Triple(
                 first = R.string.settings_security_lock_enable_title,
-                second = R.string.settings_security_lock_enable_subtitle
+                second = R.string.settings_security_lock_enable_subtitle,
+                third = proton.android.authenticator.shared.ui.R.string.action_cancel
             )
-        }.also { (titleResId, subtitleResId) ->
+        }.also { (titleResId, subtitleResId, cancelButtonResId) ->
             updateAppLockType(
                 titleResId = titleResId,
                 subtitleResId = subtitleResId,
+                cancelButtonResId = cancelButtonResId,
                 context = context,
                 appLockType = newAppLockType,
                 settingsModel = settingsModel
@@ -180,9 +183,11 @@ internal class SettingsMasterViewModel @Inject constructor(
         }
     }
 
+    @Suppress("LongParameterList")
     private fun updateAppLockType(
         @StringRes titleResId: Int,
         @StringRes subtitleResId: Int,
+        @StringRes cancelButtonResId: Int,
         context: Context,
         appLockType: SettingsAppLockType,
         settingsModel: SettingsMasterSettingsModel
@@ -191,6 +196,7 @@ internal class SettingsMasterViewModel @Inject constructor(
             authenticateBiometricUseCase(
                 title = context.getString(titleResId),
                 subtitle = context.getString(subtitleResId),
+                cancelButton = context.getString(cancelButtonResId),
                 context = context
             ).fold(
                 onFailure = { reason ->
