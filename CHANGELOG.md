@@ -6,6 +6,22 @@
 
 ### Other
 
+## 1.2.1 (2025-09-17)
+
+### Features :tada:
+
+- Support FIDO2.
+
+### Fixes :bug:
+
+- Fix RTL support.
+- More bug fixes.
+
+### Other
+
+- Importer and Uri parsing improvements.
+- Translation updates.
+
 ## 1.2.0 (2025-08-20)
 
 ### Features :tada:
