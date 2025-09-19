@@ -6,11 +6,13 @@
 
 ### Other
 
-## 1.2.1 (2025-09-17)
+## 1.3.0 (2025-09-19)
 
 ### Features :tada:
 
 - Support FIDO2.
+- New sorting options
+- Support enabling/disabling anonymous data sharing in settings screen
 
 ### Fixes :bug:
 
