@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("proton.android.authenticator.plugins.libraries.android")
+    id("org.jetbrains.kotlin.kapt")
 
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
@@ -12,8 +13,10 @@ plugins {
 
 android {
     namespace = "proton.android.authenticator.business.shared"
+}
 
-    ksp {
+kapt {
+    arguments {
         arg("room.schemaLocation", "$projectDir/schemas")
     }
 }
@@ -96,6 +99,6 @@ dependencies {
     implementation(libs.protobuf.lite)
     implementation(projects.shared.common)
 
-    ksp(libs.androidx.room.compiler)
+    kapt(libs.androidx.room.compiler)
     ksp(libs.hilt.compiler)
 }
