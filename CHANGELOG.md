@@ -6,6 +6,12 @@
 
 ### Other
 
+## 1.3.1 (2025-09-22)
+
+### Fixes :bug:
+
+- Fix incorrect codes on sorting.
+
 ## 1.3.0 (2025-09-19)
 
 ### Features :tada:
