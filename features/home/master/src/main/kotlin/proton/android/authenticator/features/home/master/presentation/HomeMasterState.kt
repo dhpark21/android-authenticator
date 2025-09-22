@@ -57,8 +57,6 @@ internal sealed interface HomeMasterState {
 
         override val showTopSearchBar: Boolean = false
 
-        internal val entryModels: List<HomeMasterEntryModel> = emptyList()
-
         internal val isSyncEnabled: Boolean = settings.isSyncEnabled
 
     }
@@ -135,10 +133,15 @@ internal sealed interface HomeMasterState {
             SettingsDigitType.Plain -> false
         }
 
-        internal val entryModelsMap: Map<String, HomeMasterEntryModel> = entries
-            .sort(sortingType = settings.sortingType)
-            .zip(other = entryCodes, transform = ::HomeMasterEntryModel)
-            .associateBy { entryModel -> entryModel.id }
+        internal val entryModelsMap: Map<String, HomeMasterEntryModel> = run {
+            val sortedEntries = entries.sort(sortingType = settings.sortingType)
+            val uriToCodeMap = entries.zip(entryCodes).associate { (entry, code) -> entry.uri to code }
+            sortedEntries.mapNotNull { entry ->
+                uriToCodeMap[entry.uri]?.let { code ->
+                    HomeMasterEntryModel(entry, code)
+                }
+            }.associateBy { entryModel -> entryModel.id }
+        }
 
         internal val entryModels: List<HomeMasterEntryModel> = entryModelsMap.values.toList()
 
