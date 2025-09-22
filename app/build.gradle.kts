@@ -27,7 +27,7 @@ plugins {
 val sentryDSN: String? = System.getenv("SENTRY_DSN")
 
 val jobId: Int = System.getenv("CI_JOB_ID")?.take(3)?.toInt() ?: 0
-val appVersionName: String = "1.3.0"
+val appVersionName: String = "1.3.1"
 val appVersionCode: Int = versionCode(appVersionName)
 
 fun versionCode(versionName: String): Int {
