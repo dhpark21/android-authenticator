@@ -11,4 +11,7 @@ dependencies {
 
     implementation(projects.business.backups)
     implementation(projects.shared.crypto)
+
+    debugImplementation(libs.androidx.ui.tooling)
+    implementation(libs.androidx.ui.tooling.preview)
 }

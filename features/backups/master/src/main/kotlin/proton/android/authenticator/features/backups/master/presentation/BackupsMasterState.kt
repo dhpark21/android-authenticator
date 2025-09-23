@@ -28,7 +28,9 @@ import proton.android.authenticator.features.shared.entries.presentation.EntryMo
 internal data class BackupsMasterState(
     internal val entryModels: ImmutableList<EntryModel>,
     internal val event: BackupMasterEvent,
-    private val backup: Backup
+    private val backup: Backup,
+    internal val showWarningPasswordDialog: Boolean,
+    internal val enableWarningMessage: Boolean
 ) {
 
     internal val backupModel: BackupMasterModel = BackupMasterModel(
@@ -48,7 +50,9 @@ internal data class BackupsMasterState(
         internal val Initial = BackupsMasterState(
             entryModels = persistentListOf(),
             event = BackupMasterEvent.Idle,
-            backup = Backup.Default
+            backup = Backup.Default,
+            showWarningPasswordDialog = false,
+            enableWarningMessage = false
         )
 
     }

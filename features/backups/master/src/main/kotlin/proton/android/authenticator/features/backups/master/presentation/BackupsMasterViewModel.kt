@@ -28,6 +28,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -59,6 +60,9 @@ internal class BackupsMasterViewModel @Inject constructor(
 
     private val backupFlow = observeBackupUseCase()
 
+    private val showWarningPasswordDialog = MutableStateFlow(false)
+    private val enableWarningMessage = MutableStateFlow(false)
+
     private val entryModelsFlow = observeEntryModelsUseCase()
         .map(List<EntryModel>::toPersistentList)
 
@@ -68,12 +72,29 @@ internal class BackupsMasterViewModel @Inject constructor(
         entryModelsFlow,
         eventFlow,
         backupFlow,
+        showWarningPasswordDialog,
+        enableWarningMessage,
         ::BackupsMasterState
     ).stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
         initialValue = BackupsMasterState.Initial
     )
+
+    init {
+        viewModelScope.launch {
+            backupFlow.firstOrNull()?.also { backupModel ->
+                val shouldDisplayWarningDialog = backupModel.isEnabled &&
+                    backupModel.encryptedPassword.isNullOrEmpty() &&
+                    backupModel.directoryUri.toString().isNotEmpty()
+
+                if (shouldDisplayWarningDialog) {
+                    showWarningPasswordDialog.update { true }
+                    enableWarningMessage.update { backupModel.count > 0 }
+                }
+            }
+        }
+    }
 
     internal fun onConsumeEvent(event: BackupMasterEvent) {
         eventFlow.compareAndSet(expect = event, update = BackupMasterEvent.Idle)
@@ -122,6 +143,18 @@ internal class BackupsMasterViewModel @Inject constructor(
                 }
             )
         }
+    }
+
+    internal fun onConfirmAlertBackupDialog() {
+        showWarningPasswordDialog.update { false }
+        enableWarningMessage.update { false }
+        onDisableBackup()
+    }
+
+    internal fun onDismissAlertBackupDialog() {
+        showWarningPasswordDialog.update { false }
+        enableWarningMessage.update { false }
+        onDisableBackup()
     }
 
     private fun updateBackup(newBackupMasterBackup: BackupMasterModel) {
