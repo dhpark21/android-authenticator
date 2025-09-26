@@ -91,6 +91,7 @@ internal class BackupsMasterViewModel @Inject constructor(
                 if (shouldDisplayWarningDialog) {
                     showWarningPasswordDialog.update { true }
                     enableWarningMessage.update { backupModel.count > 0 }
+                    onDisableBackup(forceDisable = true)
                 }
             }
         }
@@ -100,8 +101,8 @@ internal class BackupsMasterViewModel @Inject constructor(
         eventFlow.compareAndSet(expect = event, update = BackupMasterEvent.Idle)
     }
 
-    internal fun onDisableBackup() {
-        if (!backupModel.isEnabled) return
+    internal fun onDisableBackup(forceDisable: Boolean = false) {
+        if (!forceDisable && !backupModel.isEnabled) return
 
         backupModel.copy(
             isEnabled = false,
@@ -148,13 +149,11 @@ internal class BackupsMasterViewModel @Inject constructor(
     internal fun onConfirmAlertBackupDialog() {
         showWarningPasswordDialog.update { false }
         enableWarningMessage.update { false }
-        onDisableBackup()
     }
 
     internal fun onDismissAlertBackupDialog() {
         showWarningPasswordDialog.update { false }
         enableWarningMessage.update { false }
-        onDisableBackup()
     }
 
     private fun updateBackup(newBackupMasterBackup: BackupMasterModel) {
