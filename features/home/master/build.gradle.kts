@@ -10,4 +10,6 @@ dependencies {
     implementation(projects.business.entries)
     implementation(projects.business.entryCodes)
     implementation(projects.business.settings)
+
+    implementation(projects.business.backups)
 }

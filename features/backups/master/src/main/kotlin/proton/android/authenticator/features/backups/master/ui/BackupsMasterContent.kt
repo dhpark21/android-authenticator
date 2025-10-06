@@ -55,7 +55,6 @@ import proton.android.authenticator.shared.ui.domain.components.rows.ToggleRow
 import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.domain.modifiers.backgroundSection
 import proton.android.authenticator.shared.ui.domain.screens.AlertDialogScreen
-import proton.android.authenticator.shared.ui.domain.screens.CustomDialogScreen
 import proton.android.authenticator.shared.ui.domain.theme.Theme
 import proton.android.authenticator.shared.ui.domain.theme.ThemeSpacing
 import proton.android.authenticator.shared.common.logs.AuthenticatorLogger
@@ -67,8 +66,6 @@ internal fun BackupsMasterContent(
     onFolderPicked: (Uri) -> Unit,
     onFrequencyChange: (BackupFrequencyType) -> Unit,
     onBackupNowClick: (List<EntryModel>) -> Unit,
-    onConfirmAlertBackupDialog: () -> Unit,
-    onDismissAlertBackupDialog: () -> Unit,
     modifier: Modifier = Modifier
 ) = with(state) {
     var showNotificationsExplanationDialog by remember { mutableStateOf(false) }
@@ -227,26 +224,6 @@ internal fun BackupsMasterContent(
             }
         )
     }
-
-    if (this.showWarningPasswordDialog) {
-        CustomDialogScreen(
-            title = UiText.Resource(id = R.string.backups_password_alert_dialog_title),
-            message = UiText.Resource(id = R.string.backups_password_alert_dialog_message),
-            confirmText = UiText.Resource(id = R.string.backups_password_alert_dialog_got_it),
-            isConfirmEnabled = true,
-            onConfirmClick = onConfirmAlertBackupDialog,
-            onDismissed = onDismissAlertBackupDialog
-        ) {
-            if (this.enableWarningMessage) {
-                Text(
-                    text = UiText.Resource(id = R.string.backups_password_alert_dialog_warning)
-                        .asString(),
-                    color = Theme.colorScheme.surfaceVariant,
-                    style = Theme.typography.body2Regular
-                )
-            }
-        }
-    }
 }
 
 @Preview
@@ -258,9 +235,7 @@ private fun BackupsMasterContentPreview() {
             onDisableBackup = {},
             onFolderPicked = {},
             onFrequencyChange = {},
-            onBackupNowClick = {},
-            onConfirmAlertBackupDialog = {},
-            onDismissAlertBackupDialog = {}
+            onBackupNowClick = {}
         )
     }
 }

@@ -65,9 +65,7 @@ fun BackupsMasterScreen(
         onDisableBackup = ::onDisableBackup,
         onFolderPicked = ::onFolderPicked,
         onUpdateFrequencyType = ::onUpdateFrequencyType,
-        onCreateBackup = ::onCreateBackup,
-        onConfirmAlertBackupDialog = ::onConfirmAlertBackupDialog,
-        onDismissAlertBackupDialog = ::onDismissAlertBackupDialog
+        onCreateBackup = ::onCreateBackup
     )
 }
 
@@ -82,9 +80,7 @@ private fun InternalBackupsMasterScreen(
     onDisableBackup: () -> Unit,
     onFolderPicked: (Uri) -> Unit,
     onUpdateFrequencyType: (BackupFrequencyType) -> Unit,
-    onCreateBackup: (List<EntryModel>) -> Unit,
-    onConfirmAlertBackupDialog: () -> Unit,
-    onDismissAlertBackupDialog: () -> Unit
+    onCreateBackup: (List<EntryModel>) -> Unit
 ) {
     LaunchedEffect(key1 = state.event) {
         when (val event = state.event) {
@@ -118,9 +114,7 @@ private fun InternalBackupsMasterScreen(
             onDisableBackup = onDisableBackup,
             onFolderPicked = onFolderPicked,
             onFrequencyChange = onUpdateFrequencyType,
-            onBackupNowClick = onCreateBackup,
-            onConfirmAlertBackupDialog = onConfirmAlertBackupDialog,
-            onDismissAlertBackupDialog = onDismissAlertBackupDialog
+            onBackupNowClick = onCreateBackup
         )
     }
 }
@@ -139,9 +133,7 @@ private fun BackupsMasterScreenPreview() {
             onDisableBackup = {},
             onFolderPicked = {},
             onUpdateFrequencyType = {},
-            onCreateBackup = {},
-            onConfirmAlertBackupDialog = {},
-            onDismissAlertBackupDialog = {}
+            onCreateBackup = {}
         )
     }
 }
@@ -170,9 +162,7 @@ private fun BackupsMasterScreenPreviewToggleOn() {
             onDisableBackup = {},
             onFolderPicked = {},
             onUpdateFrequencyType = {},
-            onCreateBackup = {},
-            onConfirmAlertBackupDialog = {},
-            onDismissAlertBackupDialog = {}
+            onCreateBackup = {}
         )
     }
 }

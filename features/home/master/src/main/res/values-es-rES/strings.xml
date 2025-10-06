@@ -29,4 +29,8 @@
   <string name="home_snackbar_message_entry_sync_disabled">La sincronización del dispositivo está desactivada</string>
   <string name="home_snackbar_message_entry_sync_unauthorized">La sincronización se ha desactivado. Vuelve a iniciar sesión en tu cuenta de Proton.</string>
   <string name="home_snackbar_message_entry_sync_failed">Se ha producido un error al sincronizar las entradas</string>
+  <string name="backups_password_alert_dialog_title">Verschlüsselte Datensicherung jetzt verfügbar</string>
+  <string name="backups_password_alert_dialog_message">Zur Erhöhung der Sicherheit wurde die automatische unverschlüsselte Sicherung deaktiviert. Sie kann in den Einstellungen wieder aktiviert werden.</string>
+  <string name="backups_password_alert_dialog_warning">Auf dem Gerät befinden sich einige Sicherungskopien. Stelle sicher, dass diese entfernt werden.</string>
+  <string name="backups_password_alert_dialog_got_it">Verstanden</string>
 </resources>
