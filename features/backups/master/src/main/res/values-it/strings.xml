@@ -36,8 +36,8 @@
   </plurals>
   <string name="backups_snackbar_message_backup_success">Backup effettuato</string>
   <string name="backups_snackbar_message_update_error">Modifica delle impostazioni non riuscita</string>
-  <string name="backups_password_alert_dialog_title">Encrypted backup is now available</string>
-  <string name="backups_password_alert_dialog_message">For enhanced security, automatic non-encrypted backup has been disabled. You can re-enable it in the Settings.</string>
-  <string name="backups_password_alert_dialog_warning">You have some backup(s) on your device. Make sure to remove them.</string>
-  <string name="backups_password_alert_dialog_got_it">Got it</string>
+  <string name="backups_password_alert_dialog_title">Il backup crittografato è ora disponibile</string>
+  <string name="backups_password_alert_dialog_message">Per una maggiore sicurezza, il backup automatico non crittografato è stato disabilitato. Puoi riattivarlo nelle Impostazioni.</string>
+  <string name="backups_password_alert_dialog_warning">Hai alcuni backup sul tuo dispositivo. Assicurati di rimuoverli.</string>
+  <string name="backups_password_alert_dialog_got_it">Capito</string>
 </resources>
