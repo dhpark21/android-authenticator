@@ -32,22 +32,28 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import proton.android.authenticator.business.applock.domain.AppLockState
 import proton.android.authenticator.business.backups.domain.Backup
 import proton.android.authenticator.business.backups.domain.BackupFrequencyType
 import proton.android.authenticator.business.entries.application.syncall.SyncEntriesReason
+import proton.android.authenticator.business.settings.domain.SettingsAppLockType
 import proton.android.authenticator.features.home.master.R
 import proton.android.authenticator.features.home.master.usecases.ObserveEntryCodesUseCase
 import proton.android.authenticator.features.home.master.usecases.SortEntriesUseCase
 import proton.android.authenticator.features.shared.entries.usecases.ObserveEntryModelsUseCase
 import proton.android.authenticator.features.shared.entries.usecases.SyncEntriesModelsUseCase
+import proton.android.authenticator.features.shared.usecases.applock.ObserveAppLockStateUseCase
 import proton.android.authenticator.features.shared.usecases.backups.ObserveBackupUseCase
 import proton.android.authenticator.features.shared.usecases.backups.UpdateBackupUseCase
 import proton.android.authenticator.features.shared.usecases.clipboards.CopyToClipboardUseCase
@@ -72,7 +78,8 @@ internal class HomeMasterViewModel @Inject constructor(
     private val syncEntriesModelsUseCase: SyncEntriesModelsUseCase,
     private val timeProvider: TimeProvider,
     private val observeBackupUseCase: ObserveBackupUseCase,
-    private val updateBackupUseCase: UpdateBackupUseCase
+    private val updateBackupUseCase: UpdateBackupUseCase,
+    private val observeAppLockStateUseCase: ObserveAppLockStateUseCase
 ) : ViewModel() {
 
     private val entrySearchQueryState = mutableStateOf(value = SEARCH_QUERY_DEFAULT_VALUE)
@@ -197,16 +204,32 @@ internal class HomeMasterViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            backupFlow.firstOrNull()?.also { backupModel ->
-                val shouldDisplayWarningDialog = backupModel.isEnabled &&
-                    backupModel.encryptedPassword.isNullOrEmpty() &&
-                    backupModel.directoryUri.toString().isNotEmpty()
-
-                if (shouldDisplayWarningDialog) {
-                    showWarningPasswordDialog.update { true }
-                    enableWarningMessage.update { backupModel.count > 0 }
-                    disableBackup()
+            observeSettingsUseCase()
+                .flatMapLatest {
+                    if (it.appLockType == SettingsAppLockType.Biometric) {
+                        observeAppLockStateUseCase()
+                    } else {
+                        flowOf(AppLockState.AuthNotRequired)
+                    }
                 }
+                .filter { appLockState -> appLockState == AppLockState.AuthNotRequired }
+                .take(1)
+                .collect { appLockState ->
+                    checkDisplayWarning()
+                }
+        }
+    }
+
+    private suspend fun checkDisplayWarning() {
+        backupFlow.firstOrNull()?.also { backupModel ->
+            val shouldDisplayWarningDialog = backupModel.isEnabled &&
+                backupModel.encryptedPassword.isNullOrEmpty() &&
+                backupModel.directoryUri.toString().isNotEmpty()
+
+            if (shouldDisplayWarningDialog) {
+                showWarningPasswordDialog.update { true }
+                enableWarningMessage.update { backupModel.count > 0 }
+                disableBackup()
             }
         }
     }
