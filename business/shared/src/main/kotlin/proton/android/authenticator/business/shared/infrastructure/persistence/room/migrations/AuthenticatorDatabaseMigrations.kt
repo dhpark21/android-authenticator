@@ -38,4 +38,14 @@ internal object AuthenticatorDatabaseMigrations {
             AccountDatabase.MIGRATION_11.migrate(db)
         }
     }
+
+    internal val Migration_5_6 = object : Migration(startVersion = 5, endVersion = 6) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            // Update AccountMetadataEntity records from 'Pass' to 'Authenticator'
+            db.execSQL("UPDATE AccountMetadataEntity SET product = 'Authenticator' WHERE product = 'Pass'")
+
+            // Update SessionEntity records from 'Pass' to 'Authenticator'
+            db.execSQL("UPDATE SessionEntity SET product = 'Authenticator' WHERE product = 'Pass'")
+        }
+    }
 }

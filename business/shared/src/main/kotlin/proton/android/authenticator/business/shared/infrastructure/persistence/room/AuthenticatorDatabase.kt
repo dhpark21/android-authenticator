@@ -180,11 +180,12 @@ internal abstract class AuthenticatorDatabase :
 
         internal const val NAME: String = "authenticator.db"
 
-        internal const val VERSION: Int = 5
+        internal const val VERSION: Int = 6
 
         internal val ManualMigrations: Array<out Migration> = arrayOf(
             AuthenticatorDatabaseMigrations.Migration_3_4,
-            AuthenticatorDatabaseMigrations.Migration_4_5
+            AuthenticatorDatabaseMigrations.Migration_4_5,
+            AuthenticatorDatabaseMigrations.Migration_5_6
         )
 
     }
