@@ -19,21 +19,13 @@
 import com.android.build.api.dsl.VariantDimension
 import configuration.extensions.protonEnvironment
 import configuration.util.toBuildConfigValue
+import proton.android.authenticator.platform.buildlogic.domain.platform.configuration.PlatformAndroidConfig
 
 plugins {
     id("proton.android.authenticator.plugins.applications.authenticator")
 }
 
 val sentryDSN: String? = System.getenv("SENTRY_DSN")
-
-val jobId: Int = System.getenv("CI_JOB_ID")?.take(3)?.toInt() ?: 0
-val appVersionName: String = "1.3.1"
-val appVersionCode: Int = versionCode(appVersionName)
-
-fun versionCode(versionName: String): Int {
-    val segment = versionName.split('.').map { it.toInt() }
-    return (segment[0] * 10000000) + (segment[1] * 100000) + (segment[2] * 1000) + jobId
-}
 
 fun VariantDimension.setAssetLinksResValue(host: String) {
     resValue(
@@ -78,7 +70,7 @@ android {
         create("alpha") {
             dimension = "version"
             applicationIdSuffix = ".alpha"
-            versionNameSuffix = "-alpha.$appVersionCode"
+            versionNameSuffix = "-alpha.${PlatformAndroidConfig.getVersionCode()}"
         }
         create("play") {
             dimension = "version"

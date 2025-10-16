@@ -3,7 +3,7 @@ package proton.android.authenticator.platform.buildlogic.domain.platform.configu
 import org.gradle.api.JavaVersion
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-internal object PlatformAndroidConfig {
+object PlatformAndroidConfig {
 
     internal const val APPLICATION_ID: String = "proton.android.authenticator"
 
@@ -27,11 +27,11 @@ internal object PlatformAndroidConfig {
 
     internal const val VERSION_NAME: String = "1.3.1"
 
-    internal val VERSION_CODE: Int = VERSION_NAME.split('.')
-        .map(String::toInt)
-        .let { segment ->
-            segment[0].times(10_000_000) + segment[1].times(100_000) + segment[2].times(1_000)
-        }
+    fun getVersionCode(): Int {
+        val jobId: Int = System.getenv("CI_JOB_ID")?.take(3)?.toInt() ?: 0
+        val segment = VERSION_NAME.split('.').map { it.toInt() }
+        return (segment[0] * 10_000_000) + (segment[1] * 100_000) + (segment[2] * 1_000) + jobId
+    }
 
     internal val AbiFilters: Set<String> = setOf("armeabi-v7a", "arm64-v8a", "x86_64")
 
