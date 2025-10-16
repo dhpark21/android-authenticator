@@ -13,6 +13,14 @@ plugins {
 
 android {
     namespace = "proton.android.authenticator.business.shared"
+    
+    defaultConfig {
+        testInstrumentationRunner = "proton.android.authenticator.shared.testing.HiltRunner"
+    }
+
+    sourceSets {
+        getByName("androidTest").assets.srcDir("$projectDir/schemas")
+    }
 }
 
 kapt {
@@ -101,4 +109,11 @@ dependencies {
 
     kapt(libs.androidx.room.compiler)
     ksp(libs.hilt.compiler)
+
+    // Test dependencies
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.room.testing)
+    androidTestImplementation(libs.hilt.android.testing)
+    androidTestImplementation(projects.shared.testing)
 }
