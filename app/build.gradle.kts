@@ -103,10 +103,14 @@ android {
     }
 
     sourceSets {
-        all {
-            if (!name.contains("fdroid", ignoreCase = true)) {
-                kotlin.srcDir("src/nonFdroid/kotlin")
-            }
+        getByName("dev") {
+            kotlin.srcDir("src/nonFdroid/kotlin")
+        }
+        getByName("alpha") {
+            kotlin.srcDir("src/nonFdroid/kotlin")
+        }
+        getByName("play") {
+            kotlin.srcDir("src/nonFdroid/kotlin")
         }
     }
 }
