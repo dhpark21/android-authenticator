@@ -212,7 +212,6 @@ io.matthewnelson.encoding:core-jvm:2.3.1
 io.matthewnelson.encoding:core:2.3.1
 io.sentry:sentry-android-core:7.21.0
 io.sentry:sentry:7.21.0
-io.swagger.core.v3:swagger-annotations:2.2.7
 jakarta.inject:jakarta.inject-api:2.0.1
 javax.inject:javax.inject:1
 me.proton.authenticator.common:lib:0.27.0
