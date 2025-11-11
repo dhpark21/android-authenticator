@@ -9,7 +9,9 @@ object PlatformAndroidConfig {
 
     internal const val COMPILE_SDK: Int = 36
 
-    internal const val EXCLUDED_PACKAGING_RESOURCES: String = "/META-INF/{AL2.0,LGPL2.1}"
+    internal val EXCLUDED_PACKAGING_RESOURCES: List<String> = listOf(
+        "/META-INF/{AL2.0,LGPL2.1}"
+    )
 
     internal const val MIN_SDK: Int = 27
 

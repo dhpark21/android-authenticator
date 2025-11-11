@@ -12,6 +12,7 @@ java {
 dependencies {
     compileOnly(libs.gradle.android)
     compileOnly(libs.gradle.kotlin)
+    compileOnly(libs.gradle.sentry)
 }
 
 gradlePlugin {

@@ -209,12 +209,6 @@ dependencyGuard {
     }
 }
 
-sentry {
-    autoInstallation.enabled.set(false)
-    ignoredBuildTypes.set(setOf("debug"))
-    ignoredFlavors.set(setOf("fdroid"))
-}
-
 fun DependencyHandlerScope.addDevBlackImplementation(
     default: Any,
     devBlack: Any,

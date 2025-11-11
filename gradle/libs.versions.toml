@@ -126,6 +126,7 @@ core-utilAndroidSentry = { module = "me.proton.core:util-android-sentry", versio
 document-file = { module = "androidx.documentfile:documentfile", version.ref = "documentfileVersion" }
 gradle-android = { group = "com.android.tools.build", name = "gradle", version.ref = "agpVersion" }
 gradle-kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlinVersion" }
+gradle-sentry = { group = "io.sentry", name = "sentry-android-gradle-plugin", version.ref = "sentryVersion" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltVersion" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltVersion" }
 hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hiltVersion" }

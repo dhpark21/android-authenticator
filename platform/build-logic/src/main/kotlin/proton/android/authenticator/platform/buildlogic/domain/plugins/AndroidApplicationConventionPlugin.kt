@@ -1,10 +1,13 @@
 package proton.android.authenticator.platform.buildlogic.domain.plugins
 
+import com.android.build.api.variant.AndroidComponentsExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import io.sentry.android.gradle.extensions.SentryPluginExtension
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import proton.android.authenticator.platform.buildlogic.domain.platform.configuration.PlatformAndroidConfig
 import proton.android.authenticator.platform.buildlogic.domain.platform.configuration.PlatformAndroidConfig.EXCLUDED_PACKAGING_RESOURCES
+import proton.android.authenticator.platform.buildlogic.domain.platform.plugins.PlatformPlugin
 
 internal abstract class AndroidApplicationConventionPlugin : ConventionPlugin() {
 
@@ -44,6 +47,36 @@ internal abstract class AndroidApplicationConventionPlugin : ConventionPlugin() 
                 resources {
                     excludes += EXCLUDED_PACKAGING_RESOURCES
                 }
+            }
+        }
+    }
+
+    protected fun Project.configureSentry() {
+        val isFdroidBuild = gradle.startParameter.taskRequests.any { taskRequest ->
+            taskRequest.args.any { it.contains("fdroid", ignoreCase = true) }
+        } || gradle.startParameter.taskNames.any { it.contains("fdroid", ignoreCase = true) }
+        
+        if (!isFdroidBuild) {
+            applyPlugin(PlatformPlugin.Sentry)
+            extensions.configure<SentryPluginExtension> {
+                autoInstallation.enabled.set(false)
+                ignoredBuildTypes.set(setOf("debug"))
+            }
+        } else {
+            extensions.configure<AndroidComponentsExtension<*, *, *>>("androidComponents") {
+                onVariants { variant ->
+                    if (variant.productFlavors.any { it.second == "fdroid" }) {
+                        variant.packaging.resources.excludes.add("assets/sentry-external-modules.txt")
+                    }
+                }
+            }
+        }
+    }
+
+    protected fun Project.configureSwaggerExclusion() {
+        configurations.configureEach {
+            resolutionStrategy {
+                exclude(mapOf("group" to "io.swagger.core.v3", "module" to "swagger-annotations"))
             }
         }
     }

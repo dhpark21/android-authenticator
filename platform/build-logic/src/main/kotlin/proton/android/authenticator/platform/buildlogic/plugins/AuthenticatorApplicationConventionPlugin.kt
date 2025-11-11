@@ -35,10 +35,11 @@ internal class AuthenticatorApplicationConventionPlugin : AndroidApplicationConv
         applyPlugin(PlatformPlugin.Ksp)
         applyPlugin(PlatformPlugin.Play)
         applyPlugin(PlatformPlugin.ProtonEnvironmentConfig)
-        applyPlugin(PlatformPlugin.Sentry)
 
         configureAndroidApplication()
         configureKotlinOptions()
+        configureSentry()
+        configureSwaggerExclusion()
 
         addBundleDependency(
             bundle = PlatformDependencyBundle.AndroidApplicationImplementation,
