@@ -180,6 +180,11 @@ dependencies {
         fdroid = null
     )
 
+    addFdroidSpecialLib(
+        default = libs.core.telemetry.data,
+        fdroid = null
+    )
+
     testImplementation(libs.junit)
 
     debugImplementation(libs.androidx.ui.tooling)

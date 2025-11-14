@@ -25,13 +25,11 @@ import dagger.hilt.components.SingletonComponent
 import me.proton.core.telemetry.data.repository.TelemetryLocalDataSourceImpl
 import me.proton.core.telemetry.data.repository.TelemetryRemoteDataSourceImpl
 import me.proton.core.telemetry.data.repository.TelemetryRepositoryImpl
-import me.proton.core.telemetry.data.usecase.IsTelemetryEnabledImpl
 import me.proton.core.telemetry.data.worker.TelemetryWorkerManagerImpl
 import me.proton.core.telemetry.domain.TelemetryWorkerManager
 import me.proton.core.telemetry.domain.repository.TelemetryLocalDataSource
 import me.proton.core.telemetry.domain.repository.TelemetryRemoteDataSource
 import me.proton.core.telemetry.domain.repository.TelemetryRepository
-import me.proton.core.telemetry.domain.usecase.IsTelemetryEnabled
 import javax.inject.Singleton
 
 @[Module InstallIn(SingletonComponent::class)]
@@ -47,9 +45,5 @@ internal abstract class BusinessSharedAccountModule {
     internal abstract fun bindTelemetryRemoteDataSource(impl: TelemetryRemoteDataSourceImpl): TelemetryRemoteDataSource
 
     @[Binds Singleton]
-    internal abstract fun bindIsTelemetryEnabled(impl: IsTelemetryEnabledImpl): IsTelemetryEnabled
-
-    @[Binds Singleton]
     internal abstract fun bindTelemetryWorkerManager(impl: TelemetryWorkerManagerImpl): TelemetryWorkerManager
-
 }
