@@ -10,6 +10,7 @@ import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import proton.android.authenticator.navigation.domain.commands.NavigationCommand
 import proton.android.authenticator.navigation.domain.commands.NavigationCommandHandler
+import proton.android.authenticator.shared.common.domain.builds.BuildFlavorType
 import proton.android.authenticator.shared.common.logs.AuthenticatorLogger
 import javax.inject.Inject
 
@@ -21,7 +22,10 @@ internal class InMemoryNavigationCommandHandler @Inject constructor() : Navigati
             is NavigationCommand.FinishAffinity -> {
                 (command.context as? Activity)
                     ?.also { activity -> activity.finishAffinity() }
-                    ?: AuthenticatorLogger.w(TAG, "Cannot finish affinity: provided context is not an Activity")
+                    ?: AuthenticatorLogger.w(
+                        TAG,
+                        "Cannot finish affinity: provided context is not an Activity"
+                    )
             }
 
             is NavigationCommand.NavigateTo -> {
@@ -45,21 +49,33 @@ internal class InMemoryNavigationCommandHandler @Inject constructor() : Navigati
             }
 
             is NavigationCommand.NavigateToPlayStore -> {
-                val playStoreUri = "$PLAY_STORE_APP_URI${command.appPackageName}".toUri()
-                val playStoreIntent = Intent(Intent.ACTION_VIEW, playStoreUri).apply {
-                    setPackage(PLAY_STORE_VENDOR_PACKAGE)
-                }
+                when (command.buildFlavorType) {
+                    BuildFlavorType.Fdroid -> {
+                        NavigationCommand.NavigateToUrl(
+                            url = command.fallbackUrl ?: "$FDROID_WEB_URI${command.appPackageName}",
+                            context = command.context
+                        ).also { urlCommand -> handle(urlCommand, navController) }
+                    }
 
-                try {
-                    command.context.startActivity(playStoreIntent)
-                } catch (error: ActivityNotFoundException) {
-                    AuthenticatorLogger.w(TAG, "Cannot navigate to PlayStore: $playStoreUri")
-                    AuthenticatorLogger.w(TAG, error)
+                    else -> {
+                        val storeUri = "$PLAY_STORE_APP_URI${command.appPackageName}".toUri()
+                        val storeIntent = Intent(Intent.ACTION_VIEW, storeUri).apply {
+                            setPackage(PLAY_STORE_VENDOR_PACKAGE)
+                        }
 
-                    NavigationCommand.NavigateToUrl(
-                        url = command.fallbackUrl ?: "$PLAY_STORE_WEB_URI${command.appPackageName}",
-                        context = command.context
-                    ).also { urlCommand -> handle(urlCommand, navController) }
+                        try {
+                            command.context.startActivity(storeIntent)
+                        } catch (error: ActivityNotFoundException) {
+                            AuthenticatorLogger.w(TAG, "Cannot navigate to store: $storeUri")
+                            AuthenticatorLogger.w(TAG, error)
+
+                            NavigationCommand.NavigateToUrl(
+                                url = command.fallbackUrl
+                                    ?: "$PLAY_STORE_WEB_URI${command.appPackageName}",
+                                context = command.context
+                            ).also { urlCommand -> handle(urlCommand, navController) }
+                        }
+                    }
                 }
             }
 
@@ -129,6 +145,9 @@ internal class InMemoryNavigationCommandHandler @Inject constructor() : Navigati
         private const val PLAY_STORE_WEB_URI = "https://play.google.com/store/apps/details?id="
 
         private const val PLAY_STORE_VENDOR_PACKAGE = "com.android.vending"
+
+        private const val FDROID_APP_URI = "fdroid.app:"
+        private const val FDROID_WEB_URI = "https://f-droid.org/packages/"
 
         private const val URI_SCHEME_PACKAGE = "package"
 

@@ -40,6 +40,7 @@ import proton.android.authenticator.business.settings.domain.SettingsThemeType
 import proton.android.authenticator.features.settings.master.R
 import proton.android.authenticator.features.settings.master.presentation.SettingsMasterSettingsModel
 import proton.android.authenticator.features.settings.master.presentation.SettingsMasterState
+import proton.android.authenticator.shared.common.domain.builds.BuildFlavorType
 import proton.android.authenticator.shared.ui.domain.components.rows.NavigationRow
 import proton.android.authenticator.shared.ui.domain.components.rows.SelectorRow
 import proton.android.authenticator.shared.ui.domain.components.rows.ToggleRow
@@ -68,7 +69,7 @@ internal fun SettingsContent(
     onViewLogsClick: () -> Unit,
     onShareTelemetryChange: (AnonymousData, Boolean) -> Unit,
     onShareCrashReportChange: (AnonymousData, Boolean) -> Unit,
-    onDiscoverAppClick: (String, String) -> Unit,
+    onDiscoverAppClick: (String, String, BuildFlavorType) -> Unit,
     onVersionNameClick: () -> Unit,
     modifier: Modifier = Modifier
 ) = with(state) {
@@ -84,7 +85,11 @@ internal fun SettingsContent(
                     onDismissPassBanner(settingsModel)
                 },
                 onActionClick = {
-                    onDiscoverAppClick(bannerModel.passBannerApp.id, bannerModel.passBannerApp.url)
+                    onDiscoverAppClick(
+                        bannerModel.passBannerApp.id,
+                        bannerModel.passBannerApp.url,
+                        state.appConfig.buildFlavor.type
+                    )
                 }
             )
         }
@@ -250,7 +255,10 @@ internal fun SettingsContent(
                                     ),
                                     isChecked = isTelemetryEnabled,
                                     onCheckedChange = { newIsTelemetryEnabled ->
-                                        onShareTelemetryChange(shareAnonymousData, newIsTelemetryEnabled)
+                                        onShareTelemetryChange(
+                                            shareAnonymousData,
+                                            newIsTelemetryEnabled
+                                        )
                                     }
                                 )
                             }
@@ -266,7 +274,10 @@ internal fun SettingsContent(
                                     ),
                                     isChecked = isCrashReportEnabled,
                                     onCheckedChange = { newIsCrashReportEnabled ->
-                                        onShareCrashReportChange(shareAnonymousData, newIsCrashReportEnabled)
+                                        onShareCrashReportChange(
+                                            shareAnonymousData,
+                                            newIsCrashReportEnabled
+                                        )
                                     }
                                 )
                             }
@@ -285,7 +296,13 @@ internal fun SettingsContent(
                             titleText = discoverApp.title,
                             leadingIcon = discoverApp.icon,
                             description = discoverApp.description,
-                            onClick = { onDiscoverAppClick(discoverApp.id, discoverApp.url) }
+                            onClick = {
+                                onDiscoverAppClick(
+                                    discoverApp.id,
+                                    discoverApp.url,
+                                    state.appConfig.buildFlavor.type
+                                )
+                            }
                         )
                     }
                 }

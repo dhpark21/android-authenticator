@@ -55,7 +55,9 @@ import proton.android.authenticator.features.shared.usecases.snackbars.DispatchS
 import proton.android.authenticator.features.shared.users.usecases.ObserveIsUserAuthenticatedUseCase
 import proton.android.authenticator.features.shared.users.usecases.ObserveUserUseCase
 import proton.android.authenticator.shared.common.domain.answers.Answer
+import proton.android.authenticator.shared.common.domain.configs.AppConfig
 import proton.android.authenticator.shared.common.domain.models.SnackbarEvent
+import proton.android.authenticator.shared.common.flowCombine.combineN
 import proton.android.authenticator.shared.common.logs.AuthenticatorLogger
 import javax.inject.Inject
 
@@ -73,7 +75,8 @@ internal class SettingsMasterViewModel @Inject constructor(
     private val updateAppLockStateUseCase: UpdateAppLockStateUseCase,
     private val dispatchSnackbarEventUseCase: DispatchSnackbarEventUseCase,
     private val observeIsUserAuthenticatedUseCase: ObserveIsUserAuthenticatedUseCase,
-    private val updateAnonymousDataUseCase: UpdateAnonymousDataUseCase
+    private val updateAnonymousDataUseCase: UpdateAnonymousDataUseCase,
+    private val appConfig: AppConfig
 ) : ViewModel() {
 
     private val eventFlow = MutableStateFlow<SettingsMasterEvent>(value = SettingsMasterEvent.Idle)
@@ -86,14 +89,23 @@ internal class SettingsMasterViewModel @Inject constructor(
         ::SettingsMasterConfigModel
     )
 
-    internal val stateFlow: StateFlow<SettingsMasterState> = combine(
+    internal val stateFlow: StateFlow<SettingsMasterState> = combineN(
         eventFlow,
         configModelFlow,
         observeSettingsUseCase(),
         observeUninstalledProtonApps(),
         observeUserUseCase(),
-        SettingsMasterState::Ready
-    ).stateIn(
+        flowOf(appConfig)
+    ) { event, configModel, settings, uninstalledProtonApps, user, appConfig ->
+        SettingsMasterState.Ready(
+            event = event,
+            configModel = configModel,
+            settings = settings,
+            uninstalledProtonApps = uninstalledProtonApps,
+            user = user,
+            appConfig = appConfig
+        )
+    }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
         initialValue = SettingsMasterState.Loading

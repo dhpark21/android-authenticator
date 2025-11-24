@@ -3,6 +3,7 @@ package proton.android.authenticator.navigation.domain.commands
 import android.content.Context
 import android.net.Uri
 import proton.android.authenticator.navigation.domain.destinations.NavigationDestination
+import proton.android.authenticator.shared.common.domain.builds.BuildFlavorType
 import proton.android.authenticator.shared.common.domain.models.MimeType
 import proton.android.authenticator.shared.ui.R
 
@@ -20,7 +21,8 @@ internal sealed interface NavigationCommand {
     data class NavigateToPlayStore(
         internal val appPackageName: String,
         internal val context: Context,
-        internal val fallbackUrl: String? = null
+        internal val fallbackUrl: String? = null,
+        internal val buildFlavorType: BuildFlavorType
     ) : NavigationCommand
 
     data class NavigateToUrl(

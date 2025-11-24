@@ -23,6 +23,7 @@ import proton.android.authenticator.business.settings.domain.Settings
 import proton.android.authenticator.business.users.domain.User
 import proton.android.authenticator.protonapps.domain.ProtonApp
 import proton.android.authenticator.shared.common.domain.builds.BuildFlavorType
+import proton.android.authenticator.shared.common.domain.configs.AppConfig
 import proton.android.authenticator.shared.common.domain.constants.UrlConstants
 
 internal sealed interface SettingsMasterState {
@@ -40,7 +41,8 @@ internal sealed interface SettingsMasterState {
         private val configModel: SettingsMasterConfigModel,
         private val settings: Settings,
         private val uninstalledProtonApps: List<ProtonApp>,
-        private val user: User?
+        private val user: User?,
+        val appConfig: AppConfig
     ) : SettingsMasterState {
 
         internal val accountDisplayName: String? = user?.displayName
@@ -76,12 +78,14 @@ internal sealed interface SettingsMasterState {
         )
 
         internal val discoverModel: SettingsMasterDiscoverModel = SettingsMasterDiscoverModel(
-            uninstalledProtonApps = uninstalledProtonApps
+            uninstalledProtonApps = uninstalledProtonApps,
+            appConfig = appConfig
         )
 
         internal val bannerModel: SettingsMasterBannerModel = SettingsMasterBannerModel(
             isPassBannerDismissed = settings.isPassBannerDismissed,
-            uninstalledProtonApps = uninstalledProtonApps
+            uninstalledProtonApps = uninstalledProtonApps,
+            appConfig = appConfig
         )
 
         internal val anonymousData: AnonymousData? = configModel.anonymousData

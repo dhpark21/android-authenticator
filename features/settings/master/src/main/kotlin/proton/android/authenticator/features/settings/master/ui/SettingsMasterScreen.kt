@@ -36,6 +36,7 @@ import proton.android.authenticator.features.settings.master.R
 import proton.android.authenticator.features.settings.master.presentation.SettingsMasterEvent
 import proton.android.authenticator.features.settings.master.presentation.SettingsMasterState
 import proton.android.authenticator.features.settings.master.presentation.SettingsMasterViewModel
+import proton.android.authenticator.shared.common.domain.builds.BuildFlavorType
 import proton.android.authenticator.shared.ui.domain.components.bars.SmallTopBar
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
 import proton.android.authenticator.shared.ui.domain.models.UiText
@@ -56,7 +57,7 @@ fun SettingsMasterScreen(
     onHowToClick: (String) -> Unit,
     onFeedbackClick: (String) -> Unit,
     onViewLogsClick: () -> Unit,
-    onDiscoverAppClick: (String, String) -> Unit,
+    onDiscoverAppClick: (String, String, BuildFlavorType) -> Unit,
     onVersionNameClick: () -> Unit
 ) = with(hiltViewModel<SettingsMasterViewModel>()) {
     val state by stateFlow.collectAsStateWithLifecycle()

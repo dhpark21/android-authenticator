@@ -47,5 +47,15 @@ enum class ProtonAppType(
         id = "ch.protonvpn.android",
         url = "https://protonvpn.com/download-android",
         position = 1
+    ),
+    PassFDroid(
+        id = "proton.android.pass.fdroid",
+        url = "https://f-droid.org/en/packages/proton.android.pass.fdroid/",
+        position = 0
+    ),
+    VpnFDroid(
+        id = "ch.protonvpn.android",
+        url = "https://f-droid.org/en/packages/ch.protonvpn.android/",
+        position = 1
     )
 }

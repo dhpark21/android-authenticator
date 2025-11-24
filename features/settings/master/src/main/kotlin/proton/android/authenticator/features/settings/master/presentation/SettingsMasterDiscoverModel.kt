@@ -21,39 +21,76 @@ package proton.android.authenticator.features.settings.master.presentation
 import proton.android.authenticator.features.settings.master.R
 import proton.android.authenticator.protonapps.domain.ProtonApp
 import proton.android.authenticator.protonapps.domain.ProtonAppType
+import proton.android.authenticator.shared.common.domain.builds.BuildFlavorType
+import proton.android.authenticator.shared.common.domain.configs.AppConfig
 import proton.android.authenticator.shared.ui.domain.models.UiIcon
 import proton.android.authenticator.shared.ui.domain.models.UiText
 import proton.android.authenticator.shared.ui.R as uiR
 
-internal data class SettingsMasterDiscoverModel(private val uninstalledProtonApps: List<ProtonApp>) {
+internal data class SettingsMasterDiscoverModel(
+    private val uninstalledProtonApps: List<ProtonApp>,
+    private val appConfig: AppConfig
+) {
+    private val discoverProtonAppsMap = when (appConfig.buildFlavor.type) {
+        BuildFlavorType.Fdroid -> {
+            mapOf(
+                ProtonAppType.Calendar to Triple(
+                    first = UiIcon.Resource(id = uiR.drawable.ic_logo_calendar),
+                    second = UiText.Resource(id = R.string.settings_discover_calendar_title),
+                    third = UiText.Resource(id = R.string.settings_discover_calendar_description)
+                ),
+                ProtonAppType.Drive to Triple(
+                    first = UiIcon.Resource(id = uiR.drawable.ic_logo_drive),
+                    second = UiText.Resource(id = R.string.settings_discover_drive_title),
+                    third = UiText.Resource(id = R.string.settings_discover_drive_description)
+                ),
+                ProtonAppType.Mail to Triple(
+                    first = UiIcon.Resource(id = uiR.drawable.ic_logo_mail),
+                    second = UiText.Resource(id = R.string.settings_discover_mail_title),
+                    third = UiText.Resource(id = R.string.settings_discover_mail_description)
+                ),
+                ProtonAppType.PassFDroid to Triple(
+                    first = UiIcon.Resource(id = uiR.drawable.ic_logo_pass),
+                    second = UiText.Resource(id = R.string.settings_discover_pass_title),
+                    third = UiText.Resource(id = R.string.settings_discover_pass_description)
+                ),
+                ProtonAppType.VpnFDroid to Triple(
+                    first = UiIcon.Resource(id = uiR.drawable.ic_logo_vpn),
+                    second = UiText.Resource(id = R.string.settings_discover_vpn_title),
+                    third = UiText.Resource(id = R.string.settings_discover_vpn_description)
+                )
+            )
+        }
 
-    private val discoverProtonAppsMap = mapOf(
-        ProtonAppType.Calendar to Triple(
-            first = UiIcon.Resource(id = uiR.drawable.ic_logo_calendar),
-            second = UiText.Resource(id = R.string.settings_discover_calendar_title),
-            third = UiText.Resource(id = R.string.settings_discover_calendar_description)
-        ),
-        ProtonAppType.Drive to Triple(
-            first = UiIcon.Resource(id = uiR.drawable.ic_logo_drive),
-            second = UiText.Resource(id = R.string.settings_discover_drive_title),
-            third = UiText.Resource(id = R.string.settings_discover_drive_description)
-        ),
-        ProtonAppType.Mail to Triple(
-            first = UiIcon.Resource(id = uiR.drawable.ic_logo_mail),
-            second = UiText.Resource(id = R.string.settings_discover_mail_title),
-            third = UiText.Resource(id = R.string.settings_discover_mail_description)
-        ),
-        ProtonAppType.Pass to Triple(
-            first = UiIcon.Resource(id = uiR.drawable.ic_logo_pass),
-            second = UiText.Resource(id = R.string.settings_discover_pass_title),
-            third = UiText.Resource(id = R.string.settings_discover_pass_description)
-        ),
-        ProtonAppType.Vpn to Triple(
-            first = UiIcon.Resource(id = uiR.drawable.ic_logo_vpn),
-            second = UiText.Resource(id = R.string.settings_discover_vpn_title),
-            third = UiText.Resource(id = R.string.settings_discover_vpn_description)
-        )
-    )
+        else ->
+            mapOf(
+                ProtonAppType.Calendar to Triple(
+                    first = UiIcon.Resource(id = uiR.drawable.ic_logo_calendar),
+                    second = UiText.Resource(id = R.string.settings_discover_calendar_title),
+                    third = UiText.Resource(id = R.string.settings_discover_calendar_description)
+                ),
+                ProtonAppType.Drive to Triple(
+                    first = UiIcon.Resource(id = uiR.drawable.ic_logo_drive),
+                    second = UiText.Resource(id = R.string.settings_discover_drive_title),
+                    third = UiText.Resource(id = R.string.settings_discover_drive_description)
+                ),
+                ProtonAppType.Mail to Triple(
+                    first = UiIcon.Resource(id = uiR.drawable.ic_logo_mail),
+                    second = UiText.Resource(id = R.string.settings_discover_mail_title),
+                    third = UiText.Resource(id = R.string.settings_discover_mail_description)
+                ),
+                ProtonAppType.Pass to Triple(
+                    first = UiIcon.Resource(id = uiR.drawable.ic_logo_pass),
+                    second = UiText.Resource(id = R.string.settings_discover_pass_title),
+                    third = UiText.Resource(id = R.string.settings_discover_pass_description)
+                ),
+                ProtonAppType.Vpn to Triple(
+                    first = UiIcon.Resource(id = uiR.drawable.ic_logo_vpn),
+                    second = UiText.Resource(id = R.string.settings_discover_vpn_title),
+                    third = UiText.Resource(id = R.string.settings_discover_vpn_description)
+                )
+            )
+    }
 
     internal val shouldShowDiscoverSection: Boolean = uninstalledProtonApps.isNotEmpty()
 

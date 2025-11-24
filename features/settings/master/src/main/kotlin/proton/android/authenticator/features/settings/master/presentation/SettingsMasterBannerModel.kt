@@ -20,17 +20,28 @@ package proton.android.authenticator.features.settings.master.presentation
 
 import proton.android.authenticator.protonapps.domain.ProtonApp
 import proton.android.authenticator.protonapps.domain.ProtonAppType
+import proton.android.authenticator.shared.common.domain.builds.BuildFlavorType
+import proton.android.authenticator.shared.common.domain.configs.AppConfig
 
 internal data class SettingsMasterBannerModel(
     private val isPassBannerDismissed: Boolean,
-    private val uninstalledProtonApps: List<ProtonApp>
+    private val uninstalledProtonApps: List<ProtonApp>,
+    private val appConfig: AppConfig
 ) {
 
     internal val shouldShowPassBanner: Boolean
-        get() = !isPassBannerDismissed && uninstalledProtonApps.any { it.type == ProtonAppType.Pass }
+        get() = !isPassBannerDismissed && uninstalledProtonApps.any {
+            if (appConfig.buildFlavor.type == BuildFlavorType.Fdroid)
+                it.type == ProtonAppType.PassFDroid
+            else
+                it.type == ProtonAppType.Pass
+        }
 
     internal val passBannerApp: ProtonApp = ProtonApp(
-        type = ProtonAppType.Pass,
+        type = if (appConfig.buildFlavor.type == BuildFlavorType.Fdroid)
+            ProtonAppType.PassFDroid
+        else
+            ProtonAppType.Pass,
         isInstalled = false
     )
 
