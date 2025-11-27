@@ -18,7 +18,6 @@
 
 package proton.android.authenticator.business.keys.application.create
 
-import com.proton.gopenpgp.armor.Armor.unarmor
 import kotlinx.coroutines.withContext
 import me.proton.core.crypto.common.context.CryptoContext
 import me.proton.core.domain.entity.UserId
@@ -52,7 +51,7 @@ internal class KeyCreator @Inject constructor(
                     user.tryUseKeys(message = KEY_MESSAGE, cryptoContext) {
                         encryptAndSignData(EncryptionKey.generate().asByteArray())
                     }
-                        .let(::unarmor)
+                        .let { cryptoContext.pgpCrypto.getUnarmored(it) }
                         .let(Base64::encodeToByteArray)
                         .let(::String)
                 }

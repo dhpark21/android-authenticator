@@ -13,7 +13,7 @@ androidComponents {
 }
 
 dependencies {
-    compileOnly(files("../../../proton-libs/gopenpgp/gopenpgp.aar"))
-
     implementation(libs.core.accountManager)
+    implementation(libs.core.crypto)
+    implementation(libs.core.key)
 }

@@ -122,8 +122,6 @@ androidComponents {
 }
 
 dependencies {
-    implementation(files("../../proton-libs/gopenpgp/gopenpgp.aar"))
-
     implementation(libs.core.accountManager)
     implementation(libs.core.auth)
     implementation(libs.core.authFidoDagger)

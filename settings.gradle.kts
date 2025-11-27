@@ -49,9 +49,7 @@ plugins {
 }
 
 includeCoreBuild {
-    branch.set("main")
-
-    includeBuild("gopenpgp")
+    // branch.set("main")
 }
 
 val isCI = System.getenv("GITLAB_CI").toBoolean()
