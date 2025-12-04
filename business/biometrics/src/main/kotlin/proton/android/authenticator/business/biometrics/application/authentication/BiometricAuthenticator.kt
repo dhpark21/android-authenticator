@@ -73,6 +73,7 @@ internal class BiometricAuthenticator @Inject constructor(
             .setTitle(title)
             .setSubtitle(subtitle)
             .setAllowedAuthenticators(allowedAuthenticators)
+            .setConfirmationRequired(false)
 
         val isDeviceCredentialAllowed = allowedAuthenticators and DEVICE_CREDENTIAL != 0
         if (!isDeviceCredentialAllowed) {
