@@ -1,3 +1,3 @@
 package proton.android.authenticator.navigation.domain.destinations
 
-internal interface NavigationDestination
+interface NavigationDestination

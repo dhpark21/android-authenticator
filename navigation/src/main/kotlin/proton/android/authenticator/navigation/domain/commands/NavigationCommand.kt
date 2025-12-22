@@ -7,7 +7,7 @@ import proton.android.authenticator.shared.common.domain.builds.BuildFlavorType
 import proton.android.authenticator.shared.common.domain.models.MimeType
 import proton.android.authenticator.shared.ui.R
 
-internal sealed interface NavigationCommand {
+sealed interface NavigationCommand {
 
     data class FinishAffinity(internal val context: Context) : NavigationCommand
 

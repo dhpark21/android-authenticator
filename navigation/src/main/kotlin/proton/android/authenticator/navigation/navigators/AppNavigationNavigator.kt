@@ -1,7 +1,7 @@
 package proton.android.authenticator.navigation.navigators
 
+import androidx.compose.material.navigation.BottomSheetNavigator
 import androidx.compose.material.navigation.ModalBottomSheetLayout
-import androidx.compose.material.navigation.rememberBottomSheetNavigator
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
@@ -15,19 +15,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
-import proton.android.authenticator.business.applock.domain.AppLockState
-import proton.android.authenticator.business.settings.domain.SettingsAppLockType
 import proton.android.authenticator.business.steps.domain.StepDestination
 import proton.android.authenticator.features.shared.usecases.applock.ObserveAppLockStateUseCase
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import proton.android.authenticator.features.shared.usecases.steps.ObserveStepUseCase
-import proton.android.authenticator.navigation.domain.commands.NavigationCommand
 import proton.android.authenticator.navigation.domain.commands.NavigationCommandHandler
 import proton.android.authenticator.navigation.domain.flows.NavigationFlow
 import proton.android.authenticator.navigation.domain.graphs.backups.backupsNavigationGraph
@@ -38,8 +33,6 @@ import proton.android.authenticator.navigation.domain.graphs.onboarding.Onboardi
 import proton.android.authenticator.navigation.domain.graphs.onboarding.onboardingNavigationGraph
 import proton.android.authenticator.navigation.domain.graphs.settings.settingsNavigationGraph
 import proton.android.authenticator.navigation.domain.graphs.sync.syncNavigationGraph
-import proton.android.authenticator.navigation.domain.graphs.unlock.UnlockNavigationDestination
-import proton.android.authenticator.navigation.domain.graphs.unlock.unlockNavigationGraph
 import proton.android.authenticator.navigation.domain.navigators.NavigationNavigator
 import proton.android.authenticator.shared.common.domain.dispatchers.SnackbarDispatcher
 import proton.android.authenticator.shared.ui.domain.events.ObserveAsUiEvents
@@ -58,6 +51,8 @@ internal class AppNavigationNavigator @Inject constructor(
     @[Composable OptIn(ExperimentalCoroutinesApi::class)]
     override fun NavGraphs(
         isDarkTheme: Boolean,
+        bottomSheetNavigator: BottomSheetNavigator,
+        navController: NavHostController,
         onFinishLaunching: () -> Unit,
         onLaunchNavigationFlow: (NavigationFlow) -> Unit,
         onAskForReview: () -> Unit
@@ -72,8 +67,6 @@ internal class AppNavigationNavigator @Inject constructor(
                         StepDestination.Onboarding -> OnboardingNavigationDestination
                     }
                 }
-                val bottomSheetNavigator = rememberBottomSheetNavigator()
-                val navController = rememberNavController(bottomSheetNavigator)
                 val scope = rememberCoroutineScope()
                 val snackbarHostState = remember { SnackbarHostState() }
                 val context = LocalContext.current
@@ -93,27 +86,6 @@ internal class AppNavigationNavigator @Inject constructor(
 
                     onDispose {
                         navController.removeOnDestinationChangedListener(observer)
-                    }
-                }
-
-                val appLockStateFlow = remember {
-                    observeSettingsUseCase()
-                        .filter { settings -> settings.appLockType == SettingsAppLockType.Biometric }
-                        .flatMapLatest { observeAppLockStateUseCase() }
-                }
-
-                ObserveAsUiEvents(flow = appLockStateFlow) { appLockState ->
-                    when (appLockState) {
-                        AppLockState.AuthRequired -> {
-                            NavigationCommand.NavigateTo(
-                                destination = UnlockNavigationDestination,
-                                isSingleTop = true
-                            ).also { navCommand ->
-                                navigationCommandHandler.handle(navCommand, navController)
-                            }
-                        }
-
-                        AppLockState.AuthNotRequired -> Unit
                     }
                 }
 
@@ -171,10 +143,6 @@ internal class AppNavigationNavigator @Inject constructor(
                         }
 
                         syncNavigationGraph(onLaunchNavigationFlow = onLaunchNavigationFlow) { navCommand ->
-                            navigationCommandHandler.handle(navCommand, navController)
-                        }
-
-                        unlockNavigationGraph { navCommand ->
                             navigationCommandHandler.handle(navCommand, navController)
                         }
                     }

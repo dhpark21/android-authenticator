@@ -19,11 +19,18 @@
 package proton.android.authenticator.app.presentation
 
 import androidx.compose.runtime.Immutable
+import proton.android.authenticator.business.applock.domain.AppLockState
 import proton.android.authenticator.business.settings.domain.Settings
 import proton.android.authenticator.business.settings.domain.SettingsAppLockType
 import proton.android.authenticator.business.settings.domain.SettingsThemeType
 import proton.android.authenticator.features.shared.entries.presentation.EntryModel
 import proton.android.authenticator.shared.ui.domain.theme.ThemeType
+
+@Immutable
+data class SettingsState(
+    val appLockType: SettingsAppLockType = SettingsAppLockType.None,
+    val appLockState: AppLockState = AppLockState.AuthNotRequired
+)
 
 @Immutable
 internal sealed interface MainState {
@@ -53,7 +60,5 @@ internal sealed interface MainState {
             SettingsThemeType.Light -> ThemeType.Light
             SettingsThemeType.System -> ThemeType.System
         }
-
     }
-
 }

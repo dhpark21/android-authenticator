@@ -22,4 +22,4 @@ import kotlinx.serialization.Serializable
 import proton.android.authenticator.navigation.domain.destinations.NavigationDestination
 
 @Serializable
-internal object UnlockNavigationDestination : NavigationDestination
+object UnlockNavigationDestination : NavigationDestination

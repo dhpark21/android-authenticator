@@ -149,6 +149,7 @@ dependencies {
     implementation(projects.business.settings)
     implementation(projects.business.users)
     implementation(projects.features.shared)
+    implementation(projects.features.unlock.master)
     implementation(projects.navigation)
     implementation(projects.shared.common)
     implementation(projects.shared.ui)

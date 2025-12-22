@@ -25,11 +25,19 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.fadeOut
+import androidx.compose.material.navigation.rememberBottomSheetNavigator
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
@@ -38,7 +46,11 @@ import proton.android.authenticator.app.handler.RequestReviewHandler
 import proton.android.authenticator.app.presentation.MainState
 import proton.android.authenticator.app.presentation.MainViewModel
 import proton.android.authenticator.business.applock.domain.AppLockState
+import proton.android.authenticator.business.settings.domain.SettingsAppLockType
 import proton.android.authenticator.features.shared.usecases.applock.UpdateAppLockStateUseCase
+import proton.android.authenticator.features.unlock.master.ui.UnlockMasterScreen
+import proton.android.authenticator.navigation.domain.commands.NavigationCommand
+import proton.android.authenticator.navigation.domain.commands.NavigationCommandHandler
 import proton.android.authenticator.navigation.domain.navigators.NavigationNavigator
 import proton.android.authenticator.shared.ui.domain.theme.isDarkTheme
 import javax.inject.Inject
@@ -57,6 +69,10 @@ internal class MainActivity : FragmentActivity() {
     @Inject
     internal lateinit var requestReviewHandler: RequestReviewHandler
 
+    @Inject
+    internal lateinit var navigationCommandHandler: NavigationCommandHandler
+
+    @SuppressWarnings("LongMethod")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -77,6 +93,10 @@ internal class MainActivity : FragmentActivity() {
                         MainState.Loading -> Unit
                         is MainState.Ready -> {
                             setContent {
+                                val settingsState by viewModel.settingsStateFlow.collectAsStateWithLifecycle()
+                                val context = LocalContext.current
+                                val bottomSheetNavigator = rememberBottomSheetNavigator()
+                                val navController = rememberNavController(bottomSheetNavigator)
                                 setSecureMode(isSecure = state.isBiometricLockEnabled)
 
                                 isDarkTheme(state.themeType)
@@ -84,6 +104,8 @@ internal class MainActivity : FragmentActivity() {
                                     .also { isDarkTheme ->
                                         navigationNavigator.NavGraphs(
                                             isDarkTheme = isDarkTheme,
+                                            bottomSheetNavigator = bottomSheetNavigator,
+                                            navController = navController,
                                             onAskForReview = {
                                                 viewModel.askForReviewIfApplicable(state)
                                             },
@@ -93,6 +115,32 @@ internal class MainActivity : FragmentActivity() {
                                             onLaunchNavigationFlow = viewModel::onLaunchNavigationFlow
                                         )
                                     }
+
+
+                                // The lock screen must be displayed immediately,
+                                // without relying on any asynchronous system
+                                AnimatedVisibility(
+                                    visible = settingsState.appLockType == SettingsAppLockType.Biometric &&
+                                        settingsState.appLockState == AppLockState.AuthRequired,
+                                    enter = EnterTransition.None,
+                                    exit = fadeOut()
+                                ) {
+                                    UnlockMasterScreen(
+                                        onUnlockClosed = {
+                                            NavigationCommand.FinishAffinity(
+                                                context = context
+                                            ).also {
+                                                navigationCommandHandler.handle(it, navController)
+                                            }
+                                        },
+                                        onUnlockSucceeded = {
+                                            navigationCommandHandler.handle(
+                                                NavigationCommand.NavigateUp,
+                                                navController
+                                            )
+                                        }
+                                    )
+                                }
                             }
                         }
                     }

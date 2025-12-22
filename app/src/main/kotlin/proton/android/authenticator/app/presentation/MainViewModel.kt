@@ -24,11 +24,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import me.proton.core.accountmanager.domain.AccountManager
@@ -40,8 +42,11 @@ import me.proton.core.accountmanager.presentation.onAccountTwoPassModeFailed
 import me.proton.core.accountmanager.presentation.onAccountTwoPassModeNeeded
 import me.proton.core.accountmanager.presentation.onSessionSecondFactorNeeded
 import me.proton.core.auth.presentation.AuthOrchestrator
+import proton.android.authenticator.business.applock.domain.AppLockState
+import proton.android.authenticator.business.settings.domain.SettingsAppLockType
 import proton.android.authenticator.features.shared.app.usecases.GetBuildFlavorUseCase
 import proton.android.authenticator.features.shared.entries.usecases.ObserveEntryModelsUseCase
+import proton.android.authenticator.features.shared.usecases.applock.ObserveAppLockStateUseCase
 import proton.android.authenticator.features.shared.usecases.settings.ObserveSettingsUseCase
 import proton.android.authenticator.features.shared.usecases.settings.UpdateSettingsUseCase
 import proton.android.authenticator.navigation.domain.flows.NavigationFlow
@@ -58,9 +63,27 @@ internal class MainViewModel @Inject constructor(
     private val accountManager: AccountManager,
     private val authOrchestrator: AuthOrchestrator,
     private val timeProvider: TimeProvider,
-    private val updateSettingsUseCase: UpdateSettingsUseCase
+    private val updateSettingsUseCase: UpdateSettingsUseCase,
+    private val observeAppLockStateUseCase: ObserveAppLockStateUseCase
 ) : ViewModel() {
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    internal val settingsStateFlow: StateFlow<SettingsState> = combine(
+        observeSettingsUseCase().map { it.appLockType },
+        observeAppLockStateUseCase()
+    ) { appLockType, appLockState ->
+        SettingsState(
+            appLockType = appLockType,
+            appLockState = if (appLockType == SettingsAppLockType.Biometric) appLockState
+            else AppLockState.AuthNotRequired
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
+        initialValue = SettingsState()
+    )
+
+    @OptIn(ExperimentalCoroutinesApi::class)
     internal val stateFlow: StateFlow<MainState> = combine(
         observeSettingsUseCase(),
         observeEntryModelsUseCase(),
