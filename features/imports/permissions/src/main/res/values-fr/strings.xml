@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="imports_permissions_title">Autorisation requise</string>
-  <string name="imports_permissions_description">Activez l\'autorisation d\'accès à l\'appareil photo pour utiliser le scanner de QR codes. Cela permet à l\'application de lire les codes QR et de générer votre code unique.</string>
+  <string name="imports_permissions_description">Activez l\'autorisation d\'accès à l\'appareil photo pour utiliser le scanner de QR codes. Cela permet à l\'application de lire les QR codes et de générer votre code unique.</string>
   <string name="imports_permissions_action_primary">Ouvrir les paramètres</string>
   <string name="imports_permissions_action_secondary">Importer depuis la galerie</string>
 </resources>

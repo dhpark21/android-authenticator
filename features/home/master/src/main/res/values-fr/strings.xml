@@ -32,5 +32,5 @@
   <string name="backups_password_alert_dialog_title">La sauvegarde chiffrée est maintenant disponible</string>
   <string name="backups_password_alert_dialog_message">Pour plus de sécurité, la sauvegarde automatique non chiffrée a été désactivée. Vous pouvez la réactiver dans les Paramètres.</string>
   <string name="backups_password_alert_dialog_warning">Vous avez des sauvegardes sur votre appareil. Veillez à les supprimer.</string>
-  <string name="backups_password_alert_dialog_got_it">Compris</string>
+  <string name="backups_password_alert_dialog_got_it">J\'ai compris</string>
 </resources>
