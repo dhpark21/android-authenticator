@@ -6,6 +6,14 @@
 
 ### Other
 
+## 1.3.6 (2026-01-19)
+
+### Other
+
+- Biometric unlock improvements.
+- Updated core libraries.
+- Translation updates.
+
 ## 1.3.5 (2025-11-26)
 
 ### Other
